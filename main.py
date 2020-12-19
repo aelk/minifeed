@@ -1,23 +1,24 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, render_template
 import feedparser
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def main():
-    if request.method == 'POST':
-        print(request.form.getlist('feedname'))
-
     return render_template('index.html')
 
-@app.route('/feed')
-def load_feed(feed_list):
-    feeds = map(feedparser.parse, feedList)
+@app.route('/feed', methods=['GET', 'POST'])
+def load_feed():
+    feed_list = []
+    if request.method == 'POST':
+        feed_list = request.form.getlist('feedname')
+
+    feeds = map(feedparser.parse, feed_list)
     titles = []
     for feed in feeds:
         for entry in feed['entries']:
             titles.append(entry['title'])
-    return jsonify(titles)
+    return render_template('feed.html', titles=titles)
 
 if __name__ == '__main__':
     app.run()
