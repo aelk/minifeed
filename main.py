@@ -12,13 +12,8 @@ def load_feed():
     feed_list = []
     if request.method == 'POST':
         feed_list = request.form.getlist('feedname')
-
     feeds = map(feedparser.parse, feed_list)
-    titles = []
-    for feed in feeds:
-        for entry in feed['entries']:
-            titles.append(entry['title'])
-    return render_template('feed.html', titles=titles)
+    return render_template('feed.html', feeds=feeds)
 
 if __name__ == '__main__':
     app.run()

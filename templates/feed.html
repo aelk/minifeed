@@ -1,5 +1,12 @@
 <!doctype html>
 <title>minifeed - your feed</title>
-  {% for title in titles %}
-    {{ title }}
+  {% for feed in feeds %}
+    {{ feed['title'] }} <br/> <!-- TODO -->
+    <body>
+      {% for entry in feed['entries'] %}
+        <ul>
+          <li><a href='{{ entry.link }}'>{{ entry.title }}</a></li>
+        </ul>
+      {% endfor %}
+    </body>
   {% endfor %}
